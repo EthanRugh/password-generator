@@ -5,17 +5,19 @@ var letterUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "
 var symbol = ["!", "@", "#", "$", "%", "&", "*", "?"];
 var numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 var passwordLength = 0;
-var newLibrary = []
+var library = [];
 var generatedPassword = "";
 
 var passwordType = function() {
-    var passLength = prompt("how long password");
+    
+    // password length
+    var passLength = prompt("Welcome! How long would you like your new password to be? Choose between 8 and 128 characters.");
     passLength = parseInt(passLength, 10);
     if(isNaN(passLength)) {
-        alert("invalid. nan")
+        alert("Please enter between 8 and 128")
         return;
     }if (passLength < 8 || passLength > 128) {
-        alert("invalid")
+        alert("Please enter between 8 and 128")
         return;
     }else {
         console.log(passLength)
@@ -23,27 +25,37 @@ var passwordType = function() {
     }
     
     //Lowercase letters
-    var passLower = confirm("Do you want lowercase?");
+    var passLower = confirm("Would you like to include lowercase letters?");
     if (passLower == true) {
-        newLibrary.push(letterLower);
+        library.push(letterLower);
+    } else {
+        console.log("no lower");
     }
     // uppercase letters
-    var passUpper = confirm("Do you want uppercase?");
+    var passUpper = confirm("Would you like to include uppercase letters?");
     if (passUpper == true) {
-        newLibrary.push(letterUpper);
+        library.push(letterUpper);
+    }else {
+        console.log("no upper");
     }
     // symbol
-    var passSymbol = confirm("do you want symbols?");
+    var passSymbol = confirm("Would you like to include symbols?");
     if (passSymbol == true) {
-        newLibrary.push(symbol);
+        library.push(symbol);
+    }else {
+        console.log("no symbols");
     }
     // numbers
-    var passNum = confirm("do you want to include numbers?");
+    var passNum = confirm("Would you like to include numbers?");
     if (passNum == true) {
-        newLibrary.push(numbers);
+        library.push(numbers);
+    }else {
+        console.log("no nums");
     }
+    
+    // if all answers false, return to start
     if(passLower == false && passUpper == false && passSymbol == false && passNum == false) {
-        alert("Invalid. Please select at least one of the options");
+        alert("Please select at least one of the options to generate your password.");
         passwordType();
     }else {
         generatePassword();
@@ -55,11 +67,11 @@ var generatePassword = function() {
     let password = "";
     // iterate over given length
     for(let i = 0; i < passwordLength; i++) {
-        let randomListIndex = Math.floor(Math.random() * newLibrary.length); // index = 3
-        let newList = newLibrary[randomListIndex]; // library[3] = ["1", "2", ....]
+        let randomListIndex = Math.floor(Math.random() * library.length) // index = 3
+        let newList = library[randomListIndex] // library[3] = ["1", "2", ....]
 
-        let randomIndex = Math.floor(Math.random() * newList.length);
-        let newChar = newList[randomIndex];
+        let randomIndex = Math.floor(Math.random() * newList.length)
+        let newChar = newList[randomIndex]
         password += newChar;
     }
     
@@ -95,8 +107,8 @@ var generatePassword = function() {
 
     // return generated password
     generatedPassword = password;
+    library.length = 0;
     document.getElementById("password").innerHTML = generatedPassword;
     return password;
 }
- 
 buttonEl.addEventListener("click", passwordType);
